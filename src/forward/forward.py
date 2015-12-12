@@ -128,18 +128,24 @@ class ForWard(Business):
         elif 10007 == self._request:
             """ Scan a QR Code info
             """
+            ret = RequestMixin('/box/info/by/ip/', method='get', data={'ip': self._ip}).request()
             try:
-                js = RequestMixin('/box/info/by/ip/', method='get', data={'ip': self._ip}).request()
-                ver_code = js["result"]["vercode"]
-                ret_val = {}
-                ret_val["appServerUrl"] = ""
-                ret_val["result"] = {"code": ver_code, "port": 3050}
-                ret_val["status"] = 0
-                body1 = json.dumps(ret_val)
-                self._length = len(body1)
-                print " ret json: %s   ret val %s: ", js, ret_val
+                if ret[0]:
+                    js = ret[1]
+                    logging.debug("******** 1")
+                    ver_code = js["result"]["vercode"]
+                    ret_val = {}
+                    logging.debug("******** 2")
+                    ret_val["appServerUrl"] = ""
+                    ret_val["result"] = {"code": ver_code, "port": 3050}
+                    ret_val["status"] = 0
+                    logging.debug("******** 2")
 
-                self.send_packet_back(body=body1)
+                    body1 = json.dumps(ret_val)
+                    self._length = len(body1)
+                    print " ret json: %s   ret val %s: ", js, ret_val
+
+                    self.send_packet_back(body=body1)
             except Exception, e:
                 logging.debug(e)
 
@@ -157,19 +163,21 @@ class ForWard(Business):
                 self._type = int(body_json.get("type"))
                 self._device_type = self.type_map["box"]
 
-                js1 = RequestMixin('/box/info/by/vercode/', method='get', data={'vercode': to_uid}).request()
+                ret = RequestMixin('/box/info/by/vercode/', method='get', data={'vercode': to_uid}).request()
                 logging.debug("js  **** %s" % js1)
-                self._device_id = js1["result"]["boxid"]
-                self._device = self._device_id
-                self._request = 90012
+                if ret[0]:
+                    js1 = ret[1]
+                    self._device_id = js1["result"]["boxid"]
+                    self._device = self._device_id
+                    self._request = 90012
 
-                send_body = {
-                    "type": self._type,
-                    "message": body_json.get("message"),
-                    "fromuid": to_uid
-                }
-                self.send_packet_back(body=json.dumps(send_body))
-                self._status = 0
+                    send_body = {
+                        "type": self._type,
+                        "message": body_json.get("message"),
+                        "fromuid": to_uid
+                    }
+                    self.send_packet_back(body=json.dumps(send_body))
+                    self._status = 0
             except Exception, e:
                 error = e
                 logging.debug(e)
@@ -226,19 +234,21 @@ class ForWard(Business):
         self._device_type = self.type_map["app"]
         self._request = 90011
 
-        js = requests.get(self._url + "vercode/", params={'vercode': to_uid})
-        box_id = js["result"]["boxid"]
-        self._device_id = to_uid
-        self._device = to_uid
-        ret_value = {
-            "fromuid": box_id,
-            "message": message_app,
-            "type": type_app
-        }
+        ret = requests.get(self._url + "vercode/", params={'vercode': to_uid})
+        if ret[0]:
+            js = ret[1]
+            box_id = js["result"]["boxid"]
+            self._device_id = to_uid
+            self._device = to_uid
+            ret_value = {
+                "fromuid": box_id,
+                "message": message_app,
+                "type": type_app
+            }
 
-        body_js = json.dumps(ret_value)
-        self._length = len(body_js)
-        self.send_packet_back(body_js)
+            body_js = json.dumps(ret_value)
+            self._length = len(body_js)
+            self.send_packet_back(body_js)
 
     def fun90003(self):
 
@@ -248,18 +258,20 @@ class ForWard(Business):
 
             ret_dic = {}
             try:
-                js = RequestMixin('/config/resource/', method='get', data={'names': "node_list,ip"}).request()
-                res_info = analysis_json(js)
-                logging.debug("ret_dic %s" % res_info)
+                ret = RequestMixin('/config/resource/', method='get', data={'names': "node_list,ip"}).request()
+                if ret[0]:
+                    js = ret[1]
+                    res_info = analysis_json(js)
+                    logging.debug("ret_dic %s" % res_info)
 
-                status = 0
-                if not res_info:
-                    status = 1
+                    status = 0
+                    if not res_info:
+                        status = 1
 
-                res_info['status'] = status
-                js_ret = json.dumps(res_info)
-                self._length = len(js_ret)
-                self.send_packet_back(body=js_ret)
+                    res_info['status'] = status
+                    js_ret = json.dumps(res_info)
+                    self._length = len(js_ret)
+                    self.send_packet_back(body=js_ret)
             except Exception, e:
                 ret_dic["status"] = 1
                 ret_dic["error"] = e

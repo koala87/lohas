@@ -25,7 +25,7 @@ def init_log():
         level=logging.DEBUG,
         format='[%(asctime)s - %(process)-6d - %(threadName)-10s - %(levelname)-8s]\t%(message)s',
         datefmt='%a, %d %b %Y %H:%M:%S',
-        filename='client.log',
+        filename=os.path.join(ROOT, 'client.log'),
         filemode='w')
 
     sh = logging.StreamHandler()
@@ -40,7 +40,7 @@ def register_options():
 
     parser = OptionParser()
     parser.add_option("-i", "--host", dest="host",
-                      default="192.168.1.156", help="specify host, default is 192.168.1.156")
+                      default="192.168.1.199", help="specify host, default is 192.168.1.199")
     parser.add_option("-p", "--port", dest="port",
                       type="int",
                       default=3050, help="specify port, default is 3050")
@@ -155,9 +155,9 @@ class Client(threading.Thread):
         header_str = ', '.join([str(x) for x in orig])
 
         if orig[2] != 11:
-            logging.debug('send header: (%d : %s) to %s:%d' % (len(header), header_str,
+            logging.info('send header: (%d : %s) to %s:%d' % (len(header), header_str,
                                                                self._address[0], self._address[1]))
-            logging.debug('send body: (%d : %s) to %s:%d' % (len(body), body,
+            logging.info('send body: (%d : %s) to %s:%d' % (len(body), body,
                                                              self._address[0], self._address[1]))
 
     def on_close(self):
