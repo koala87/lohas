@@ -1,0 +1,147 @@
+﻿<html ng-app="index">
+<head>
+    <title>洛哈信息服务器配置管理</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/base.css" rel="stylesheet">
+    <link href="css/pagging.css" rel="stylesheet">
+
+    <!-- JavaScript -->
+    <script type="text/javascript" src="Scripts/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="Scripts/jquery.pagging.js"></script>    
+
+    <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="Scripts/angular.js"></script>
+
+    <script type="text/javascript" src="Scripts/App/indexApp.js"></script>
+    <script type="text/javascript" src="Scripts/Controllers/indexController.js"></script>
+    <script type="text/javascript" src="Scripts/Services/indexService.js"></script>
+    
+</head>
+<body>
+    <div id="wrapper" ng-controller="indexCtrl">
+        <div class="row">            
+            <div class="col-lg-12">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <span class="title">接口配置</span>
+                            </div>
+                            <div class="col-lg-10">
+                                <button type="button" ng-click="addModelShow()" class="btn activeBtn">添加</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <!--<th>配置主键ID</th>-->
+                                    <th>配置名称</th>
+                                    <th>配置值</th>
+                                    <th class="detail">配置说明</th>
+                                    <th>状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in getAllData">
+                                    <td>{{$index + 1}}</td>
+                                    <!--<td ng-bind="data.cid"></td>-->
+                                    <td ng-bind="data.name"></td>
+                                    <td ng-bind="data.value"></td>
+                                    <td class="detail" ng-bind="data.detail"></td>
+                                    <td>
+                                        <a ng-click="editModelShow(data.name,data.value,data.detail)">编辑</a>
+                                        <a ng-click="deleteModelShow(data.name)">删除</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagination col-lg-12">
+                            <ul class="pagination" id="pagination"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--************************************************Modal************************************************-->
+        <!--删除-->
+        <div class="modal fade deleteModel" id="deleteModel" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="关闭"><span aria-hidden="true">&times;</span></button>
+                        <div class="panel-heading">删除</div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-lg-12">
+                            <input type="hidden" ng-model="deleteName" />
+                            <p>您确定要删除吗？</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-default activeBtn" ng-click="deleteModelSubmit()" data-loading-text="正在处理...">确认删除</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="editOrAddModel" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="关闭"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">添加</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-3"><span class="must">*</span><span class="control-label">配置名称：</span></div>
+                            <div class="col-lg-9">
+                                <input ng-model="nameModel" type="text" disabled="disabled" value="" class="form-control" id="nameModel">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3"><span class="must">*</span><span class="control-label">配置值：</span></div>
+                            <div class="col-lg-9">
+                                <select id="configValueType" class="form-control" ng-model="configValueOption">
+                               		<option value="-1">请选择值类型</option>
+                                    <option value="0">文本</option>
+                                    <option value="1">Json</option>
+                                </select>
+                                <textarea ng-model="nameValue" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3"><span class="must">*</span><span class="control-label">配置说明：</span></div>
+                            <div class="col-lg-9">
+                                <textarea ng-model="nameDetail" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <span class="title col-lg-3"></span>
+                            <div class="col-lg-9 error" role="alert" id="error"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-lg-8 ">
+                            <span class="error">注：配置值如选择是json时候，输入值必须是Json格式</span>
+                        </div>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-default activeBtn" ng-click="editOrAddModelModelSubmit()"  data-loading-text="正在处理...">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

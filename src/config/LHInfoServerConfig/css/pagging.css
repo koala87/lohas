@@ -1,0 +1,60 @@
+﻿.pagination *{    
+    font-size:12px;
+    color:#666;
+}
+.pagination .left span:nth-child(2n){
+    padding-left:10px;
+}
+.pagination a{
+    cursor:pointer;
+}
+.pagination .icon{
+    color: #cdc9c4;
+}
+.pagination span a,
+.pagination span i{
+    padding:6px 12px 7px;
+    background-color:#fff;
+    border:1px solid #ddd;
+    margin-left:-1px;
+}
+.pagination >li>span{
+    border:none;
+    padding:7px 0;
+}
+.pagination .firstPage,
+.pagination .lastPage{
+    padding:6px;
+}
+.pagination div{
+    display:inline;
+}
+.pagination div .form-control{
+    width:40px;
+    display:inline;
+}
+.pagination .pageCountList{
+    margin:0 5px;
+    border:1px solid #ccc;
+    border-radius:4px;
+    color:#555;
+    display:inline-block;
+    vertical-align:middle;
+    height:28px;
+}
+div.pagination{
+    margin:0;
+    position:relative;
+}
+.pagination{
+    float:right;
+}
+.pagination .left{
+    position:absolute;
+    left:0;
+}
+.pagination .current{
+    background-color:#ff8920;
+    border:1px solid #ff8920;
+    color:#fff;
+}

@@ -1,0 +1,131 @@
+body *{
+    font-family: "微软雅黑", tahoma;
+}
+body{
+    font-size:140%;
+}
+.error{
+    color:#fe5b5b;
+}
+.activeBtn{
+    background-color:#ffa10c;
+    color:#fff;
+    border-color:transparent;
+}
+.activeBtn:hover{    
+    background: #f59600;
+    color:#fff;
+}
+#wrapper > div.row{
+    padding:15px;
+    margin:0;
+    background-color:#fff;
+}
+textarea.form-control{
+    resize:none;
+    height:10em;
+}
+
+/*panel*/
+.panel{
+    border-radius:0;
+    border:none;
+    box-shadow:none;
+}
+.panel-heading,
+.panel-default>.panel-heading{
+    border:none;
+}
+.panel.panel-default{
+    border-radius:4px;
+    background-color:#f0f0f0;
+    overflow: hidden;
+}
+.panel-heading {
+    background-color:#f7f7f7;
+    border-radius:4px;
+}
+.panel-heading .title{
+    padding-left:1em;
+    font-weight:bold;
+    font-size:100%;
+    color:#666
+}
+#page-wrapper .panel-heading .row{
+    padding:0;
+}
+.panel-heading .col-lg-2{
+    padding:10px 0 0;
+}
+.panel-heading .col-lg-10{
+    text-align:right;
+}
+
+/*table*/
+.table{
+    margin-top:10px;  
+}
+table *{
+    font-size:14px;
+}
+table a{
+    color:#407af2;
+    cursor:pointer;
+}
+table a:hover{
+    color:#f59600;
+}
+table a:hover,
+table a:active{
+   text-decoration:none;
+}
+.table .detail{
+    word-break:break-all;
+    width:40%;
+    word-wrap:normal;
+}
+.table th{
+    background-color:#d2d2d2;
+}
+.table th,
+.table td{
+    text-align:center;
+    font-weight:normal;
+}
+.table tr:nth-child(2n+1){
+    background-color:#f8f8f8;
+}
+.table tr:nth-child(2n){
+    background-color:#f0f0f0;
+}
+.table-bordered{
+    border:none;
+}
+.table-bordered>tbody>tr>td, 
+.table-bordered>tbody>tr>th,
+.table-bordered>thead>tr>td, 
+.table-bordered>thead>tr>th {
+    border:1px solid #b7b7b7;
+}
+.table-bordered th:first-child,
+.table-bordered td:first-child {
+    border-left:none;
+}
+.table-bordered th:last-child,
+.table-bordered td:last-child{   
+    border-right:none;
+}
+.table-bordered th:first-child{
+    border-top-left-radius:4px;
+}
+.table-bordered th:last-child{
+    border-top-right-radius:4px;
+}
+
+/*modal*/
+.modal .row{
+    margin-bottom:15px;
+}
+.modal .modal-footer .col-lg-5{
+    text-align:left;
+}

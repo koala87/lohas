@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:cxf="http://cxf.apache.org/core"
+	xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+		http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+		http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd ">
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	
+	<!-- 解决跨域问题 -->
+	<bean id="CrossOriginResourceSharingFilter"
+		class="org.apache.cxf.rs.security.cors.CrossOriginResourceSharingFilter">
+		<property name="allowOrigins">
+			<list>
+				<value>http://jiaxiaoweitest.com</value>
+				<value>http://127.0.0.1</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="jsonDateFormat" class="java.text.SimpleDateFormat">
+		<constructor-arg value="yyyy-MM-dd HH:mm:ss" />
+	</bean>
+
+	<bean id="jsonMapper" class="org.codehaus.jackson.map.ObjectMapper">
+		<property name="serializationConfig.dateFormat" ref="jsonDateFormat" />
+		<property name="deserializationConfig.dateFormat" ref="jsonDateFormat" />
+	</bean>
+
+	<bean id="JacksonJsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider">
+		<property name="mapper" ref="jsonMapper" />
+	</bean>
+	
+	<!-- json转换 
+	<bean id="JacksonJsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />-->
+	
+	<!-- 基础数据REST服务接口 -->
+	<jaxrs:server address="/configs" >
+		<jaxrs:serviceBeans>
+			<ref bean="ConfigRESTService"/>
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<ref bean="JacksonJsonProvider"/>
+			<ref bean="CrossOriginResourceSharingFilter" />
+		</jaxrs:providers>
+		<jaxrs:features>
+			<cxf:logging />
+		</jaxrs:features>
+	</jaxrs:server>
+</beans>
